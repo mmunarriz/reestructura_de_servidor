@@ -49,7 +49,13 @@ router.get('/githubCallback', passport.authenticate('github', { failureRedirect:
 
 router.get('/current', passport.authenticate('login'), (req, res) => {
     if (req.isAuthenticated()) {
-        res.status(200).json({ status: "success", payload: req.session.user });
+        delete req.user.password;
+        req.session.user = {
+            name: `${req.user.first_name} ${req.user.last_name}`,
+            email: req.user.email,
+            rol: req.user.role
+        }
+        res.status(200).json({ status: "success", payload: req.session.user })
     } else {
         res.status(401).json({ status: "error", error: "No hay sesión de usuario actual" });
     }
