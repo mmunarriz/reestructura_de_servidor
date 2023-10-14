@@ -12,11 +12,11 @@ import passport from 'passport';
 import { initializePassport } from './config/passport.js';
 import config from './config/config.js'
 
-const urlMongo = config.mongoUrl
-const port = config.port
+const URL_MONGO = config.mongoUrl
+const PORT = config.port
 
 const app = express();
-const connection = mongoose.connect(urlMongo, {
+const connection = mongoose.connect(URL_MONGO, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'))
 app.use(session({
     store: new MongoStore({
-        mongoUrl: urlMongo,
+        mongoUrl: URL_MONGO,
         ttl: 3600
     }),
     secret: "3c0mm3rc3l0g1n",
@@ -50,4 +50,4 @@ app.get("*", (req, res) => {
     res.send('Error 404 - Not Found');
 });
 
-const server = app.listen(8080, () => console.log("Listening on port " + port))
+const server = app.listen(PORT, () => console.log("Listening on port " + PORT))
